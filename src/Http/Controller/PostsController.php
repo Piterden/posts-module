@@ -4,6 +4,7 @@ use Anomaly\PostsModule\Category\Command\AddCategoryBreadcrumb;
 use Anomaly\PostsModule\Post\Command\AddPostBreadcrumb;
 use Anomaly\PostsModule\Post\Command\AddPostsBreadcrumb;
 use Anomaly\PostsModule\Post\Command\AddPostsMetaTitle;
+use Anomaly\PostsModule\Post\Command\CheckPostCategory;
 use Anomaly\PostsModule\Post\Command\MakePostResponse;
 use Anomaly\PostsModule\Post\Command\MakePreviewResponse;
 use Anomaly\PostsModule\Post\Contract\PostRepositoryInterface;
