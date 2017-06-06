@@ -19,9 +19,10 @@ use Anomaly\Streams\Platform\Model\Posts\PostsPostsEntryModel;
 /**
  * Class PostsModuleServiceProvider
  *
- * @link          http://pyrocms.com/
  * @author        PyroCMS, Inc. <support@pyrocms.com>
  * @author        Ryan Thompson <ryan@pyrocms.com>
+ *
+ * @link          http://pyrocms.com/
  */
 class PostsModuleServiceProvider extends AddonServiceProvider
 {
@@ -53,55 +54,19 @@ class PostsModuleServiceProvider extends AddonServiceProvider
      * @var array
      */
     protected $routes = [
-        "posts/rss/categories/{category}.xml" => [
-            'as'   => 'anomaly.module.posts::categories.rss',
-            'uses' => 'Anomaly\PostsModule\Http\Controller\RssController@category',
-        ],
-        "posts/rss/tags/{tag}.xml"            => [
-            'as'   => 'anomaly.module.posts::tags.rss',
-            'uses' => 'Anomaly\PostsModule\Http\Controller\RssController@tag',
-        ],
-        "posts/rss.xml"                       => [
-            'as'   => 'anomaly.module.posts::posts.rss',
-            'uses' => 'Anomaly\PostsModule\Http\Controller\RssController@recent',
-        ],
-        'posts'                               => [
-            'as'   => 'anomaly.module.posts::posts.index',
-            'uses' => 'Anomaly\PostsModule\Http\Controller\PostsController@index',
-        ],
-        "posts/preview/{str_id}"              => [
-            'as'   => 'anomaly.module.posts::posts.preview',
-            'uses' => 'Anomaly\PostsModule\Http\Controller\PostsController@preview',
-        ],
-        "posts/tags/{tag}"                    => [
-            'as'   => 'anomaly.module.posts::tags.view',
-            'uses' => 'Anomaly\PostsModule\Http\Controller\TagsController@index',
-        ],
-        "posts/categories/{slug}"             => [
-            'as'   => 'anomaly.module.posts::categories.view',
-            'uses' => 'Anomaly\PostsModule\Http\Controller\CategoriesController@index',
-        ],
-        "posts/archive/{year}/{month?}"       => [
-            'as'   => 'anomaly.module.posts::tags.archive',
-            'uses' => 'Anomaly\PostsModule\Http\Controller\ArchiveController@index',
-        ],
-        "posts/{slug}"                        => [
-            'as'   => 'anomaly.module.posts::posts.view',
-            'uses' => 'Anomaly\PostsModule\Http\Controller\PostsController@view',
-        ],
-        'admin/posts'                         => 'Anomaly\PostsModule\Http\Controller\Admin\PostsController@index',
-        'admin/posts/choose'                  => 'Anomaly\PostsModule\Http\Controller\Admin\PostsController@choose',
-        'admin/posts/create'                  => 'Anomaly\PostsModule\Http\Controller\Admin\PostsController@create',
-        'admin/posts/edit/{id}'               => 'Anomaly\PostsModule\Http\Controller\Admin\PostsController@edit',
-        'admin/posts/view/{id}'               => 'Anomaly\PostsModule\Http\Controller\Admin\PostsController@view',
-        'admin/posts/categories'              => 'Anomaly\PostsModule\Http\Controller\Admin\CategoriesController@index',
-        'admin/posts/categories/create'       => 'Anomaly\PostsModule\Http\Controller\Admin\CategoriesController@create',
-        'admin/posts/categories/edit/{id}'    => 'Anomaly\PostsModule\Http\Controller\Admin\CategoriesController@edit',
-        'admin/posts/categories/view/{id}'    => 'Anomaly\PostsModule\Http\Controller\Admin\CategoriesController@view',
-        'admin/posts/categories/assignments'  => 'Anomaly\PostsModule\Http\Controller\Admin\CategoriesController@assignments',
-        'admin/posts/types'                   => 'Anomaly\PostsModule\Http\Controller\Admin\TypesController@index',
-        'admin/posts/types/create'            => 'Anomaly\PostsModule\Http\Controller\Admin\TypesController@create',
-        'admin/posts/types/edit/{id}'         => 'Anomaly\PostsModule\Http\Controller\Admin\TypesController@edit',
+        'admin/posts'                        => 'Anomaly\PostsModule\Http\Controller\Admin\PostsController@index',
+        'admin/posts/choose'                 => 'Anomaly\PostsModule\Http\Controller\Admin\PostsController@choose',
+        'admin/posts/create'                 => 'Anomaly\PostsModule\Http\Controller\Admin\PostsController@create',
+        'admin/posts/edit/{id}'              => 'Anomaly\PostsModule\Http\Controller\Admin\PostsController@edit',
+        'admin/posts/view/{id}'              => 'Anomaly\PostsModule\Http\Controller\Admin\PostsController@view',
+        'admin/posts/categories'             => 'Anomaly\PostsModule\Http\Controller\Admin\CategoriesController@index',
+        'admin/posts/categories/create'      => 'Anomaly\PostsModule\Http\Controller\Admin\CategoriesController@create',
+        'admin/posts/categories/edit/{id}'   => 'Anomaly\PostsModule\Http\Controller\Admin\CategoriesController@edit',
+        'admin/posts/categories/view/{id}'   => 'Anomaly\PostsModule\Http\Controller\Admin\CategoriesController@view',
+        'admin/posts/categories/assignments' => 'Anomaly\PostsModule\Http\Controller\Admin\CategoriesController@assignments',
+        'admin/posts/types'                  => 'Anomaly\PostsModule\Http\Controller\Admin\TypesController@index',
+        'admin/posts/types/create'           => 'Anomaly\PostsModule\Http\Controller\Admin\TypesController@create',
+        'admin/posts/types/edit/{id}'        => 'Anomaly\PostsModule\Http\Controller\Admin\TypesController@edit',
     ];
 
     /**
@@ -114,5 +79,56 @@ class PostsModuleServiceProvider extends AddonServiceProvider
     {
         $fields->route($this->addon, FieldsController::class);
         $assignments->route($this->addon, AssignmentsController::class);
+    }
+
+    /**
+     * Generate posts routes.
+     *
+     * @return array
+     */
+    public function getRoutes()
+    {
+        // $settings = app(SettingRepositoryInterface::class);
+        // $posts_uri = $settings->value('anomaly.module.settings::config.posts_uri');
+        $posts_uri = 'articles';
+
+        return array_merge($this->routes, [
+            $posts_uri . '/rss/categories/{category}.xml' => [
+                'as'   => 'anomaly.module.posts::categories.rss',
+                'uses' => 'Anomaly\PostsModule\Http\Controller\RssController@category',
+            ],
+            $posts_uri . '/rss/tags/{tag}.xml'            => [
+                'as'   => 'anomaly.module.posts::tags.rss',
+                'uses' => 'Anomaly\PostsModule\Http\Controller\RssController@tag',
+            ],
+            $posts_uri . '/rss.xml'                       => [
+                'as'   => 'anomaly.module.posts::posts.rss',
+                'uses' => 'Anomaly\PostsModule\Http\Controller\RssController@recent',
+            ],
+            $posts_uri                                    => [
+                'as'   => 'anomaly.module.posts::posts.index',
+                'uses' => 'Anomaly\PostsModule\Http\Controller\PostsController@index',
+            ],
+            $posts_uri . '/preview/{str_id}'              => [
+                'as'   => 'anomaly.module.posts::posts.preview',
+                'uses' => 'Anomaly\PostsModule\Http\Controller\PostsController@preview',
+            ],
+            $posts_uri . '/tags/{tag}'                    => [
+                'as'   => 'anomaly.module.posts::tags.view',
+                'uses' => 'Anomaly\PostsModule\Http\Controller\TagsController@index',
+            ],
+            $posts_uri . '/{slug}'                        => [
+                'as'   => 'anomaly.module.posts::categories.view',
+                'uses' => 'Anomaly\PostsModule\Http\Controller\CategoriesController@index',
+            ],
+            $posts_uri . '/archive/{year}/{month?}'       => [
+                'as'   => 'anomaly.module.posts::tags.archive',
+                'uses' => 'Anomaly\PostsModule\Http\Controller\ArchiveController@index',
+            ],
+            $posts_uri . '/{category}/{slug}'             => [
+                'as'   => 'anomaly.module.posts::posts.view',
+                'uses' => 'Anomaly\PostsModule\Http\Controller\PostsController@view',
+            ],
+        ]);
     }
 }
