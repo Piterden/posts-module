@@ -72,6 +72,10 @@ class PostsController extends PublicController
         if (!$post->isLive()) {
             abort(404);
         }
+        
+        if (!$this->dispatch(new CheckPostCategory($post))) {
+            abort(404);
+        }
 
         $this->dispatch(new MakePostResponse($post));
 
