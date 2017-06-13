@@ -94,7 +94,7 @@ class PostsController extends AdminController
             return $redirect->to($post->route('preview'));
         }
 
-        return $redirect->to($post->route('view'));
+        return $redirect->to(str_replace('{category}', $post->category->getSlug(), $post->route('view')));
     }
 
     /**
