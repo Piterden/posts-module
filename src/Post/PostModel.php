@@ -14,9 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class PostModel
  *
- * @link   http://pyrocms.com/
- * @author PyroCMS, Inc. <support@pyrocms.com>
- * @author Ryan Thompson <ryan@pyrocms.com>
+ * @link       http://pyrocms.com/
+ * @author     PyroCMS, Inc. <support@pyrocms.com>
+ * @author     Ryan Thompson <ryan@pyrocms.com>
  */
 class PostModel extends PostsPostsEntryModel implements PostInterface
 {

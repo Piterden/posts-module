@@ -2,7 +2,6 @@
 
 use Anomaly\PostsModule\Post\Contract\PostInterface;
 use Anomaly\Streams\Platform\Support\Authorizer;
-use Illuminate\Contracts\Auth\Guard;
 
 /**
  * Class PostAuthorizer
@@ -15,13 +14,6 @@ class PostAuthorizer
 {
 
     /**
-     * The authorization utility.
-     *
-     * @var Guard
-     */
-    protected $guard;
-
-    /**
      * The authorizer utility.
      *
      * @var Authorizer
@@ -31,12 +23,10 @@ class PostAuthorizer
     /**
      * Create a new PostAuthorizer instance.
      *
-     * @param Guard      $guard
      * @param Authorizer $authorizer
      */
-    public function __construct(Guard $guard, Authorizer $authorizer)
+    public function __construct(Authorizer $authorizer)
     {
-        $this->guard      = $guard;
         $this->authorizer = $authorizer;
     }
 
@@ -47,8 +37,12 @@ class PostAuthorizer
      */
     public function authorize(PostInterface $post)
     {
-        if (!$post->isEnabled() && !$this->authorizer->authorize('anomaly.module.posts::view_drafts')) {
-            abort(404);
+        /*
+         * If the post is not enabled yet check and make
+         * sure that we are allowed to preview it first.
+         */
+        if (!$post->isLive() && !$this->authorizer->authorize('anomaly.module.posts::posts.preview')) {
+            abort(403);
         }
     }
 }
