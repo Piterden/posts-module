@@ -37,12 +37,13 @@ class PostsController extends PublicController
     /**
      * Preview an existing post.
      *
-     * @param  PostRepositoryInterface $posts
-     * @return \Illuminate\View\View
+     * @param PostRepositoryInterface $posts
+     * @param                         $id
+     * @return null|\Symfony\Component\HttpFoundation\Response
      */
-    public function preview(PostRepositoryInterface $posts)
+    public function preview(PostRepositoryInterface $posts, $id)
     {
-        if (!$post = $posts->findByStrId($this->route->getParameter('str_id'))) {
+        if (!$post = $posts->findByStrId($id)) {
             abort(404);
         }
 
